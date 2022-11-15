@@ -58,4 +58,25 @@ let resoult;
             });
             printData(order, "allList");
         });
+
+        document.getElementById("the").addEventListener("click", async () => {
+            let thetomb = [];
+            let response = await fetch ('/quotes.json');
+            let result = await response.json();
+            let filter = result.quotes.filter(
+              (q) => q.quote.includes("the") || q.quote.includes("The")
+            );
+            for (let f of filter) {
+              let line = f.quote + "\n\t-" + f.author;
+              line = line.replaceAll("The ", "<b>The </b>");
+              line = line.replaceAll("the ", "<b>the </b>");
+              thetomb.push(line);
+            }
+            let list = document.getElementById("theList");
+            for (let d of thetomb) {
+              let li = document.createElement("li");
+              li.innerHTML = d;
+              list.appendChild(li);
+            }
+          });
 });
