@@ -8,6 +8,17 @@ let resoult;
 
     LoadData();
 
+    function printData(quotes){
+        document.getElementById('quoteList').textContent = "";
+
+        for (let q of quotes){
+            let li = document.createElement('li');
+            li.innerHTML = q.quote + " " + "<br>" + q.author + "<hr>";
+            document.getElementById('quoteList').appendChild(li);
+        }
+        
+    }
+
 
     function quotesload(quotesLista){
         let p = document.getElementById("all");
@@ -29,20 +40,22 @@ let resoult;
         LoadData();
     })
 
-        document.getElementById("abc").addEventListener("click", async () => {
-        let data = await LoadData();
-          let abc = data.quotes.sort(function (a, b) {
+    
+    document.getElementById("abc").addEventListener('click', async () => {
+        let response = await fetch ('/quotes.json');
+        let result = await response.json();
+        let order = result.quotes.sort(function(a, b){
             let first = a.author.toUpperCase();
             let second = b.author.toUpperCase();
-      
+
             if (first < second) {
-              return -1;
-            } else if (first > second) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-          printData(abc, "allList");
+                return -1;
+              } else if (first > second) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
+            printData(order, "allList");
         });
 });
